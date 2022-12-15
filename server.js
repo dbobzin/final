@@ -10,8 +10,6 @@ const path = require("path");
 // express app
 const app = express();
 
-app.use(express.static(path.join(__dirname + "/public")));
-
 // middleware
 app.use(express.json());
 
@@ -23,6 +21,14 @@ app.use((req, res, next) => {
 // routes
 app.use("/api/workouts", workoutRoutes);
 app.use("/api/user", userRoutes);
+
+app.use(express.static(path.join(__dirname + "/public")));
+//routes
+const fs = require("node:fs");
+const public_html = path.join(__dirname + "/public");
+app.get("*", (req, res) => {
+  res.sendFile(path.join(public_html, "index.html"));
+});
 
 // connect to db
 mongoose
